@@ -9,7 +9,7 @@ import org.springframework.messaging.Message;
 @Configuration
 public class MqListener {
 
-    @JmsListener(destination = "${custom.mq.destination}", containerFactory = "jmsListenerContainerFactory")
+    @JmsListener(id = "${custom.mq.destination}-listener", destination = "${custom.mq.destination}", containerFactory = "jmsListenerContainerFactory")
     public void onMessage(Message<String> message) {
         log.info("onMessage: {}", message.getPayload());
     }
