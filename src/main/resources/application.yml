@@ -29,3 +29,7 @@ ibm:
     queueManager: QT01
     connName: localhost(1414)
     user: admin
+
+custom:
+  mq:
+    destination: DEV.QUEUE.1
