@@ -1,4 +1,4 @@
-package com.kv.batchqueue;
+package com.kv.batchqueue.mq;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

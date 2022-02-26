@@ -1,26 +1,21 @@
-package com.kv.batchqueue;
+package com.kv.batchqueue.mq;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.jms.config.JmsListenerEndpointRegistry;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 @Slf4j
-@RestController
-public class MqResource {
-
+@Service
+public class MqService {
     private final JmsTemplate jmsTemplate;
     private final JmsListenerEndpointRegistry registry;
 
     @Value("${custom.mq.destination}")
     private String mqDestination;
 
-
-    public MqResource(JmsTemplate jmsTemplate, JmsListenerEndpointRegistry registry) {
+    public MqService(JmsTemplate jmsTemplate, JmsListenerEndpointRegistry registry) {
         this.jmsTemplate = jmsTemplate;
         this.registry = registry;
     }
@@ -29,16 +24,12 @@ public class MqResource {
         return mqDestination + "-listener";
     }
 
-    @GetMapping("send")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void send() {
+    public void sendMessage() {
         var msg = "Hello World!";
         jmsTemplate.convertAndSend(mqDestination, msg);
         log.info("send message: {}", msg);
     }
 
-    @GetMapping("start-jms-listener")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void startJmsListener() {
         var jmsListenerId = getJmsListenerId();
         registry.getListenerContainer(jmsListenerId);
@@ -46,8 +37,6 @@ public class MqResource {
         log.info("started {}", jmsListenerId);
     }
 
-    @GetMapping("stop-jms-listener")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void stopJmsListener() {
         var jmsListenerId = getJmsListenerId();
         registry.getListenerContainer(jmsListenerId);
