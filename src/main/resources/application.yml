@@ -18,6 +18,14 @@ springdoc:
     path: /rest-ui
   swagger-ui:
     path: /rest-ui.html
-logging:
-  level:
-    root: debug
+#logging:
+#  level:
+#    root: debug
+
+ibm:
+  mq:
+    password: passw0rd
+    channel: DEV.ADMIN.SVRCONN
+    queueManager: QT01
+    connName: localhost(1414)
+    user: admin
