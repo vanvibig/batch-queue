@@ -21,6 +21,12 @@ public class MqResource {
         mqService.sendMessage();
     }
 
+    @GetMapping("receive")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void receive() {
+        mqService.receiveMessage();
+    }
+
     @GetMapping("start-jms-listener")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void startJmsListener() {

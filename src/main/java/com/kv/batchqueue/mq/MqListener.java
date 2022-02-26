@@ -10,8 +10,8 @@ import org.springframework.messaging.Message;
 public class MqListener {
 
     @JmsListener(id = "${custom.mq.destination}-listener", destination = "${custom.mq.destination}", containerFactory = "jmsListenerContainerFactory")
-    public void onMessage(Message<String> message) {
+    public void onObjectMessage(Message<?> message) {
         log.info("onMessage: {}", message.getPayload());
+        //todo limit retry and return message to queue if max retry
     }
-
 }
