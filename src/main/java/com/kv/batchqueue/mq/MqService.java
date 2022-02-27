@@ -1,6 +1,5 @@
 package com.kv.batchqueue.mq;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kv.batchqueue.util.DataUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +13,13 @@ import org.springframework.stereotype.Service;
 public class MqService {
     private final JmsTemplate jmsTemplate;
     private final JmsListenerEndpointRegistry registry;
-    private final ObjectMapper objectMapper;
 
     @Value("${custom.mq.destination}")
     private String mqDestination;
 
-    public MqService(JmsTemplate jmsTemplate, JmsListenerEndpointRegistry registry, ObjectMapper objectMapper) {
+    public MqService(JmsTemplate jmsTemplate, JmsListenerEndpointRegistry registry) {
         this.jmsTemplate = jmsTemplate;
         this.registry = registry;
-        this.objectMapper = objectMapper;
     }
 
     private String getJmsListenerId() {
@@ -31,10 +28,12 @@ public class MqService {
 
     @SneakyThrows
     public void sendMessage() {
-        var msg = DataUtil.nextCustomer();
-        jmsTemplate.convertAndSend(mqDestination, msg);
-        jmsTemplate.convertAndSend(mqDestination, "test any string");
-        log.info("send message: {}", msg);
+        var msg1 = DataUtil.nextCustomer();
+        jmsTemplate.convertAndSend(mqDestination, msg1);
+        String msg2 = "test any string";
+        jmsTemplate.convertAndSend(mqDestination, msg2);
+        log.info("send message: {}", msg1);
+        log.info("send message: {}", msg2);
     }
 
     public void receiveMessage() {

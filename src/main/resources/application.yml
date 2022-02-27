@@ -22,9 +22,9 @@ springdoc:
   swagger-ui:
     path: /rest-ui.html
 
-logging:
-  level:
-    web: debug
+#logging:
+#  level:
+#    web: debug
 
 ibm:
   mq:

@@ -1,6 +1,6 @@
 package com.kv.batchqueue.mq;
 
-import com.kv.batchqueue.mq.handler.HandlerFactory;
+import com.kv.batchqueue.mq.handler.Visitor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.JmsListener;
@@ -10,16 +10,17 @@ import org.springframework.messaging.Message;
 @Configuration
 public class MqListener {
 
+    private final Visitor visitor;
+
+    public MqListener(Visitor visitor) {
+        this.visitor = visitor;
+    }
+
     @JmsListener(id = "${custom.mq.destination}-listener", destination = "${custom.mq.destination}", containerFactory = "jmsListenerContainerFactory")
     public <T> void onMessage(Message<T> message) {
-        //log.info("onMessage: {}", message.getPayload());
-
         var payload = message.getPayload();
+        visitor.visit(payload);
 
-        var handler = HandlerFactory.getHandler(message);
-        handler.handle(payload);
-
-        log.info("onMessage: {}", message.getPayload());
         //todo limit retry and return message to queue if max retry
         //todo handle differ type of messages: String, CustomerEntity, ...
         //todo insert message to record in db
