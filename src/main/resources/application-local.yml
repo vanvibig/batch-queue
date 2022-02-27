@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.ibm.db2.jcc.DB2Driver
     username: db2inst1
-    url: jdbc:db2://db2:50000/testdb
+    url: jdbc:db2://localhost:50000/testdb
     password: db2inst1
   jpa:
     open-in-view: false
@@ -22,16 +22,12 @@ springdoc:
   swagger-ui:
     path: /rest-ui.html
 
-logging:
-  level:
-    web: debug
-
 ibm:
   mq:
     password: passw0rd
     channel: DEV.ADMIN.SVRCONN
     queueManager: QT01
-    connName: mq(1414)
+    connName: localhost(1414)
     user: admin
 
 custom:
