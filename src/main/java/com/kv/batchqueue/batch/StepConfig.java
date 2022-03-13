@@ -9,20 +9,19 @@ import com.kv.batchqueue.batch.item.CustomWriter;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.support.SingleItemPeekableItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class StepConfig {
 
-    public final StepBuilderFactory stepBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final BaseConfig baseConfig;
 
-    public StepConfig(StepBuilderFactory stepBuilderFactory) {
+    public StepConfig(StepBuilderFactory stepBuilderFactory, BaseConfig baseConfig) {
         this.stepBuilderFactory = stepBuilderFactory;
+        this.baseConfig = baseConfig;
     }
 
     @Bean
@@ -32,23 +31,19 @@ public class StepConfig {
 
     @Bean
     @StepScope
-    public FlatFileItemReader<PersonDto> masterReader() {
-        return new FlatFileItemReaderBuilder<PersonDto>().name("personReader").resource(new ClassPathResource("batch/person-data.csv")).delimited().names(new String[]{"id", "name", "address"}).fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
-            setTargetType(PersonDto.class);
-        }}).build();
+    public SingleItemPeekableItemReader<PersonDto> masterReader() {
+        return baseConfig.createPeekReader("personReader", "batch/person-data.csv", new String[]{"id", "name", "address"}, PersonDto.class);
     }
 
     @Bean
     @StepScope
-    public FlatFileItemReader<ActionDto> slaveReader() {
-        return new FlatFileItemReaderBuilder<ActionDto>().name("slaveReader").resource(new ClassPathResource("batch/action-data.csv")).delimited().names(new String[]{"id", "action", "personId"}).fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
-            setTargetType(ActionDto.class);
-        }}).build();
+    public SingleItemPeekableItemReader<ActionDto> slaveReader() {
+        return baseConfig.createPeekReader("actionReader", "batch/action-data.csv", new String[]{"id", "action", "personId"}, ActionDto.class);
     }
 
     @Bean
     @StepScope
-    public CustomReader<String> customReader(FlatFileItemReader<PersonDto> masterReader, FlatFileItemReader<ActionDto> slaveReader) {
+    public CustomReader<String> customReader(SingleItemPeekableItemReader<PersonDto> masterReader, SingleItemPeekableItemReader<ActionDto> slaveReader) {
         var reader = new CustomReader<String>();
         reader.setMasterReader(masterReader);
         reader.addDelegates(slaveReader);

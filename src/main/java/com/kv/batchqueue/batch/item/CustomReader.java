@@ -8,7 +8,7 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamSupport;
-import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.support.SingleItemPeekableItemReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
 public class CustomReader<K extends Comparable<K>> extends ItemStreamSupport implements ItemReader<KeyDto<K>> {
 
     @Setter
-    private FlatFileItemReader<? extends KeyDto<K>> masterReader;
+    private SingleItemPeekableItemReader<? extends KeyDto<K>> masterReader;
 
-    private final List<FlatFileItemReader<? extends KeyDto<K>>> delegates = new ArrayList<>();
+    private final List<SingleItemPeekableItemReader<? extends KeyDto<K>>> delegates = new ArrayList<>();
 
     @Override
     public KeyDto<K> read() throws Exception {
@@ -45,7 +45,7 @@ public class CustomReader<K extends Comparable<K>> extends ItemStreamSupport imp
         return masterDto;
     }
 
-    public void addDelegates(FlatFileItemReader<? extends KeyDto<K>> reader) {
+    public void addDelegates(SingleItemPeekableItemReader<? extends KeyDto<K>> reader) {
         this.delegates.add(reader);
     }
 
