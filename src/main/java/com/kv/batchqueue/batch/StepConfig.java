@@ -25,8 +25,11 @@ public class StepConfig {
     }
 
     @Bean
-    public Step mergeCsvIdStep(CustomReader<Long> customReader, CustomProcessor processor, CustomWriter writer) {
-        return stepBuilderFactory.get("mergeCsvIdStep").<KeyDto<Long>, KeyDto<Long>>chunk(10).reader(customReader).processor(processor).writer(writer).build();
+    public Step mergeCsvIdStep(CustomReader<Long> customReader) {
+        return stepBuilderFactory.get("mergeCsvIdStep").<KeyDto<Long>, KeyDto<Long>>chunk(10)
+                .reader(customReader)
+                .processor(new CustomProcessor<>())
+                .writer(new CustomWriter<>()).build();
     }
 
     @Bean
@@ -49,5 +52,4 @@ public class StepConfig {
         reader.addDelegates(slaveReader);
         return reader;
     }
-
 }

@@ -2,17 +2,13 @@ package com.kv.batchqueue.batch.item;
 
 import com.kv.batchqueue.batch.dto.KeyDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.support.PassThroughItemProcessor;
-import org.springframework.stereotype.Component;
 
-@Component
-@StepScope
 @Slf4j
-public class CustomProcessor extends PassThroughItemProcessor<KeyDto<Long>> {
+public class CustomProcessor<K extends Comparable<K>> extends PassThroughItemProcessor<KeyDto<K>> {
 
     @Override
-    public KeyDto<Long> process(KeyDto<Long> item) {
+    public KeyDto<K> process(KeyDto<K> item) {
         log.info(String.valueOf(item));
         return item;
     }
