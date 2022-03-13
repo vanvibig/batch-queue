@@ -31,13 +31,25 @@ public class CustomReader<K extends Comparable<K>> extends ItemStreamSupport imp
 
         for (var delegate : delegates) {
             while (true) {
-                var slaveDto = delegate.read();
+                var slaveDto = delegate.peek();
                 if (slaveDto == null) {
                     break;
                 }
 
-                if (MapperUtil.update(masterDto, slaveDto)) {
+                var compareResult = MapperUtil.compare(masterDto, slaveDto);
+
+                if (compareResult == 0) {
+                    MapperUtil.update(masterDto, slaveDto);
+                    delegate.read();
                     break;
+                }
+
+                if (MapperUtil.compare(masterDto, slaveDto) == -1) {
+                    break;
+                }
+
+                if (MapperUtil.compare(masterDto, slaveDto) == 1) {
+                    delegate.read();
                 }
             }
         }

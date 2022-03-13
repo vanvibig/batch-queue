@@ -10,10 +10,9 @@ import lombok.ToString;
 public class ActionDto implements KeyDto<String> {
     private String id;
     private Action action;
-    private String personId;
 
     @Override
     public String getKey() {
-        return personId;
+        return id;
     }
 }

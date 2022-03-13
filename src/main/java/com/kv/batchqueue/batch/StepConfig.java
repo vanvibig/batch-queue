@@ -38,7 +38,7 @@ public class StepConfig {
     @Bean
     @StepScope
     public SingleItemPeekableItemReader<ActionDto> slaveReader() {
-        return baseConfig.createPeekReader("actionReader", "batch/action-data.csv", new String[]{"id", "action", "personId"}, ActionDto.class);
+        return baseConfig.createPeekReader("actionReader", "batch/action-data.csv", new String[]{"id", "action"}, ActionDto.class);
     }
 
     @Bean

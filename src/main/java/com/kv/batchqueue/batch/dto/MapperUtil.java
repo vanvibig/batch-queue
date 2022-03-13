@@ -7,12 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class MapperUtil {
 
-    public static <T> boolean update(T dest, T sour) {
+    public static <T> void update(T dest, T sour) {
         if (dest instanceof PersonDto && sour instanceof ActionDto) {
             log.info("Merge {} into {}", sour, dest);
             ((PersonDto) dest).setAction(((ActionDto) sour).getAction());
-            return true;
         }
-        return false;
+    }
+
+    public static <T> int compare(T dest, T sour) {
+        return ((PersonDto) dest).getKey().compareTo(((ActionDto) sour).getKey());
     }
 }
