@@ -7,12 +7,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ActionDto implements KeyDto<String> {
-    private String id;
+public class ActionDto implements KeyDto<Long> {
+    private Long id;
     private Action action;
 
     @Override
-    public String getKey() {
+    public Long getKey() {
         return id;
     }
 }

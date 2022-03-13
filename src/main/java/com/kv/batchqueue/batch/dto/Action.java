@@ -6,5 +6,6 @@ public enum Action {
     SLEEP,
     LEARN,
     PLAY,
-    CONTROL
+    CONTROL,
+    END
 }

@@ -7,14 +7,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PersonDto implements KeyDto<String> {
-    private String id;
+public class PersonDto implements KeyDto<Long> {
+    private Long id;
     private String name;
     private String address;
     private Action action;
 
     @Override
-    public String getKey() {
+    public Long getKey() {
         return id;
     }
 }

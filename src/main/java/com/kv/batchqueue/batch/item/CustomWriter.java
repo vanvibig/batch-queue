@@ -11,10 +11,10 @@ import java.util.List;
 @Component
 @StepScope
 @Slf4j
-public class CustomWriter implements ItemWriter<KeyDto<String>> {
+public class CustomWriter implements ItemWriter<KeyDto<Long>> {
 
     @Override
-    public void write(List<? extends KeyDto<String>> items) {
+    public void write(List<? extends KeyDto<Long>> items) {
         log.info(String.valueOf(items));
     }
 }

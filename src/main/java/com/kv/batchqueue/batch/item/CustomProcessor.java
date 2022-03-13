@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 @StepScope
 @Slf4j
-public class CustomProcessor extends PassThroughItemProcessor<KeyDto<String>> {
+public class CustomProcessor extends PassThroughItemProcessor<KeyDto<Long>> {
 
     @Override
-    public KeyDto<String> process(KeyDto<String> item) {
+    public KeyDto<Long> process(KeyDto<Long> item) {
         log.info(String.valueOf(item));
         return item;
     }
