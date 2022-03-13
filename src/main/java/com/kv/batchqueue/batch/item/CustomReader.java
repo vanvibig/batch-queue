@@ -63,21 +63,18 @@ public class CustomReader<K extends Comparable<K>> extends ItemStreamSupport imp
 
     @Override
     public void close() {
-        super.close();
         masterReader.close();
         delegates.forEach(ItemStream::close);
     }
 
     @Override
     public void open(ExecutionContext executionContext) {
-        super.open(executionContext);
         masterReader.open(executionContext);
         delegates.forEach(delegate -> delegate.open(executionContext));
     }
 
     @Override
     public void update(ExecutionContext executionContext) {
-        super.update(executionContext);
         masterReader.update(executionContext);
         delegates.forEach(delegate -> delegate.update(executionContext));
     }
